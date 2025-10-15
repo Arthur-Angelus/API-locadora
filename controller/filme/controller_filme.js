@@ -62,6 +62,7 @@ const buscarFilmeID = async function (id) {
             }
 
         } else {
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += '[ID incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS //400
         }
 
@@ -76,6 +77,7 @@ const inserirFilmes = async function (filme, contentType) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
+        //validação do tipo de conteudo da requisição (obrigatorio ser um JSON)
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
             //chama a função de validar todos os dados do filme
@@ -87,15 +89,15 @@ const inserirFilmes = async function (filme, contentType) {
                 let resultFilmes = await filmeDAO.setInsertMovies(filme)
 
                 if (resultFilmes) {
-                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCES_CREATED_ITEM.status
-                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCES_CREATED_ITEM.status_code
-                    MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCES_CREATED_ITEM.message
+                    MESSAGES.DEFAULT_HEADER.status          = MESSAGES.SUCCESS_CREATED_ITEM.status
+                    MESSAGES.DEFAULT_HEADER.status_code     = MESSAGES.SUCCESS_CREATED_ITEM.status_code
+                    MESSAGES.DEFAULT_HEADER.message         = MESSAGES.SUCCESS_CREATED_ITEM.message
 
                     return MESSAGES.DEFAULT_HEADER //201
                 } else {
                     return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
                 }
-            }else{
+            } else {
                 return validar //400
             }
         } else {
@@ -107,13 +109,98 @@ const inserirFilmes = async function (filme, contentType) {
 }
 
 //atualiza um filme buscando pelo id
-const atualizarFilme = async function (filme, id) {
+const atualizarFilme = async function (filme, id, contentType) {
+    //criando um objeto novo para as mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
+    try {
+        //validação do tipo de conteudo da requisição (obrigatorio ser um JSON)
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+            
+            //chama a função de validar todos os dados do filme
+            let validar = await validarDadosFilme(filme)
+
+            if (!validar) {
+                
+                //validação de id valido, chama a função controller que verifica no BD se o id existe e valido
+                let validarID = await buscarFilmeID(id)
+
+                if (validarID.status_code == 200) {
+                    
+                    //adiciona o id do filme no JSON de dados para ser encaminhado ao DAO
+                    filme.id = Number(id)
+                    
+                    //chama a função para inserir um novo filme no BD
+                    let resultFilmes = await filmeDAO.setUpdateMovies(filme)
+
+                    if (resultFilmes) {
+                        MESSAGES.DEFAULT_HEADER.status          = MESSAGES.SUCCESS_UPDATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code     = MESSAGES.SUCCESS_UPDATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message         = MESSAGES.SUCCESS_UPDATED_ITEM.message
+                        MESSAGES.DEFAULT_HEADER.items.filme     = filme
+
+                        return MESSAGES.DEFAULT_HEADER //200
+                    } else {
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+                    }
+                } else {
+                    return validarID //a função buscarFilmeID podera retornar (400 ou 404 ou 500)
+                }
+            } else {
+                return validar //400
+            }
+        } else {
+            return MESSAGES.ERROR_CONTENT_TYPE //415
+        }
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
+    }
 }
 
 //exclui um filme buscsndo pelo id
 const excluirFilme = async function (id) {
+    //criando um objeto novo para as mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
+    try {
+        //validação do tipo de conteudo da requisição (obrigatorio ser um JSON)
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+
+
+            if (!validar) {
+                
+                //validação de id valido, chama a função controller que verifica no BD se o id existe e valido
+                let validarID = await buscarFilmeID(id)
+
+                if (validarID.status_code == 200) {
+                    
+                    //adiciona o id do filme no JSON de dados para ser encaminhado ao DAO
+                    filme.id = Number(id)
+                    
+                    //chama a função para inserir um novo filme no BD
+                    let resultFilmes = await filmeDAO.setdeleteMovies(filme)
+
+                    if (resultFilmes) {
+                        MESSAGES.DEFAULT_HEADER.status          = MESSAGES.SUCCESS_DELETED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code     = MESSAGES.SUCCESS_DELETED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message         = MESSAGES.SUCCESS_DELETED_ITEM.message
+
+                        return MESSAGES.DEFAULT_HEADER //200
+                    } else {
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+                    }
+                } else {
+                    return validarID //a função buscarFilmeID podera retornar (400 ou 404 ou 500)
+                }
+            } else {
+                return validar //400
+            }
+        } else {
+            return MESSAGES.ERROR_CONTENT_TYPE //415
+        }
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
+    }
 }
 
 //validação dos dados de cadastro e atualização do filme
@@ -158,5 +245,7 @@ const validarDadosFilme = async function (filme) {
 module.exports = {
     listarFilmes,
     buscarFilmeID,
-    inserirFilmes
+    inserirFilmes,
+    atualizarFilme,
+    excluirFilme
 }

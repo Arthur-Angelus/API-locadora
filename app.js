@@ -29,7 +29,7 @@ app.use((request, response, next) => {
 const controllerFilme = require('./controller/filme/controller_filme.js')
 
 //endpoints para a rota de filme
-app.use('/v1/locadora/filmes', cors(), async function (request, response) {
+app.get('/v1/locadora/filmes', cors(), async function (request, response) {
     //chama a função para listar os filmes do BD
     let filme = await controllerFilme.listarFilmes()
 
@@ -38,7 +38,7 @@ app.use('/v1/locadora/filmes', cors(), async function (request, response) {
 })
 
 //retorna o filme pelo id
-app.use('/v1/locadora/filme/:id', cors(), async function (request, response) {
+app.get('/v1/locadora/filme/:id', cors(), async function (request, response) {
 
     //recebe o id encaminhado via parametro na requisição
     let idFilme = request.params.id
@@ -50,6 +50,7 @@ app.use('/v1/locadora/filme/:id', cors(), async function (request, response) {
     response.json(filme)
 })
 
+//insere um novo filme
 app.post('/v1/locadora/filme', cors(), bodyParserJSON, async function (request, response) {
     //recebe os dados do body da requisição (se você utilizar o bodyParser, é obrigatorio ter no endpoint)
     let dadosBody = request.body
@@ -59,6 +60,38 @@ app.post('/v1/locadora/filme', cors(), bodyParserJSON, async function (request, 
 
     //chama a controller para inserir um novo filme, encaminha dados e o content-type
     let filme = await controllerFilme.inserirFilmes(dadosBody, contentType)
+
+    response.status(filme.status_code)
+    response.json(filme)
+})
+
+//atualiza um filme existente
+app.put('/v1/locadora/filme/:id', cors(), bodyParserJSON, async function(request, response){
+    //recebe o id do filme
+    let idFilme = request.params.id
+
+    //recebe os dados a serem atualizados
+    let dadosBody = request.body
+
+    //recebe o conten-type da requisição
+    let contentType = request.headers['content-type']
+
+    //chama a função para atualizar o filme e encaminha os dados, o id e o content-type
+    let filme = await controllerFilme.atualizarFilme(dadosBody, idFilme, contentType)
+
+    response.status(filme.status_code)
+    response.json(filme)
+})
+
+app.delete('/v1/locadora/filme/:id', cors(), async function(request, response){
+    //recebe o id do filme
+    let idFilme = request.params.id
+
+    //recebe o content-type da requisição
+    let contentType = request.headers['content-type']
+
+    //chama a função para atualizar o filme e encaminha os dados, o id e o content-type
+    let filme = await controllerFilme.excluirFilme(idFilme, contentType)
 
     response.status(filme.status_code)
     response.json(filme)

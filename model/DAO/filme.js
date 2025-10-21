@@ -136,19 +136,41 @@ const setUpdateMovies = async function (filme) {
 }
 
 //exclui um filme pelo id no bamco de dados
-const setdeleteMovies = async function (id) {
+const setDeleteMovies = async function (id) {
     try {
-        let sql = `DELETE FROM tbl_filme
-                WHERE 
-                    id = ${filme.id}`
+        //Script SQL
+        let sql = `delete from tbl_filme where id=${id}`
+        
+        //Encaminha para o BD o srcipt SQL
+        let result = await prisma.$queryRawUnsafe(sql)
 
-        //executeRawUnsafe() -> executa  o script sql que não tem retorno de valores
-        let result = await prisma.$executeRawUnsafe(sql)
-
-        if (result)
-            return true
+        //console.log(Array.isArray(result))
+        if(Array.isArray(result))
+            return result
         else
             return false
+
+    } catch (error) {
+        //console.log(error)
+        return false
+    }
+}
+
+//retorna o ultimo id gerado no bd
+const getSelectLastID = async function(){
+    try {
+        //script sql para retornar apenas o ultimo id do bd
+        let sql =`select id from tbl_filme order by id desc limit 1;`
+
+         //encaminha para o BD o script sql
+         let result = await prisma.$queryRawUnsafe(sql)
+
+         //console.log(result)
+         if (Array.isArray(result))
+             return Number(result[0].id)
+         else
+             return false
+
     } catch (error) {
         return false
     }
@@ -159,5 +181,6 @@ module.exports = {
     getSelectByIdMovies,
     setInsertMovies,
     setUpdateMovies,
-    setdeleteMovies
+    setDeleteMovies,
+    getSelectLastID
 }

@@ -83,16 +83,15 @@ app.put('/v1/locadora/filme/:id', cors(), bodyParserJSON, async function(request
     response.json(filme)
 })
 
+//Retorna o filme filtrando pelo ID
 app.delete('/v1/locadora/filme/:id', cors(), async function(request, response){
-    //recebe o id do filme
+    
+    //Recebe o ID encaminhado via parametro na requisição
     let idFilme = request.params.id
 
-    //recebe o content-type da requisição
-    let contentType = request.headers['content-type']
-
-    //chama a função para atualizar o filme e encaminha os dados, o id e o content-type
-    let filme = await controllerFilme.excluirFilme(idFilme, contentType)
-
+    //Chama a função para listar os filmes do BD
+    let filme = await controllerFilme.excluirFilme(idFilme)
+    //console.log(filme)
     response.status(filme.status_code)
     response.json(filme)
 })

@@ -150,6 +150,60 @@ app.delete('/v1/locadora/genero/:id', cors(), async function(request, response){
     response.json(genero)
 })
 
+//import da controller do formato audioVisual
+const controllerformatos_audioVisuais = require('./controller/filme/controller_formato_audioVisual.js')
+
+//endpoints para a rota de genero
+app.get('/v1/locadora/formatos_audioVisuais', cors(), async function (request, response) {
+    let formato_audioVisual = await controllerformatos_audioVisuais.listarFormatos_audioVisuais()
+
+    response.status(formato_audioVisual.status_code)
+    response.json(formato_audioVisual)
+})
+
+app.get('/v1/locadora/formato_audioVisual/:id', cors(), async function (request, response) {
+
+    let idFormato_audioVisual = request.params.id
+
+    let formato_audioVisual = await controllerformatos_audioVisuais.buscarFormato_audioVisualID(idFormato_audioVisual)
+
+    response.status(formato_audioVisual.status_code)
+    response.json(formato_audioVisual)
+})
+
+app.post('/v1/locadora/formato_audioVisual', cors(), bodyParserJSON, async function (request, response) {
+    let dadosBody = request.body
+
+    let contentType = request.headers['content-type']
+
+    let formato_audioVisual = await controllerformatos_audioVisuais.inserirFormatos_audioVisuais(dadosBody, contentType)
+
+    response.status(formato_audioVisual.status_code)
+    response.json(formato_audioVisual)
+})
+
+app.put('/v1/locadora/formato_audioVisual/:id', cors(), bodyParserJSON, async function(request, response){
+    let idFormato_audioVisual = request.params.id
+
+    let dadosBody = request.body
+
+    let contentType = request.headers['content-type']
+
+    let formato_audioVisual = await controllerformatos_audioVisuais.atualizarFormato_audioVisual(dadosBody, idFormato_audioVisual, contentType)
+
+    response.status(formato_audioVisual.status_code)
+    response.json(formato_audioVisual)
+})
+
+app.delete('/v1/locadora/formato_audioVisual/:id', cors(), async function(request, response){
+    
+    let idFormato_audioVisual = request.params.id
+
+    let formato_audioVisual = await controllerformatos_audioVisuais.excluirFormato_audioVisual(idFormato_audioVisual)
+    response.status(formato_audioVisual.status_code)
+    response.json(formato_audioVisual)
+})
+
 app.listen(PORT, function () {
     console.log('API aguardando requisições....')
 })

@@ -8,9 +8,9 @@ const { PrismaClient } = require('../../generated/prisma')
 
 const prisma = new PrismaClient()
 
-const getSelectAllMovies = async function () {
+const getSelectAllAudiovisualFormats = async function () {
     try {
-        let sql = `select * from tbl_filme order by id desc`
+        let sql = `select * from tbl_formato_audioVisual order by id desc`
 
         let result = await prisma.$queryRawUnsafe(sql)
 
@@ -24,9 +24,9 @@ const getSelectAllMovies = async function () {
     }
 }
 
-const getSelectByIdMovies = async function (id) {
+const getSelectByIdAudiovisualFormats = async function (id) {
     try {
-        let sql = `select * from tbl_filme where id=${id}`
+        let sql = `select * from tbl_formato_audioVisual where id=${id}`
 
         let result = await prisma.$queryRawUnsafe(sql)
 
@@ -40,23 +40,13 @@ const getSelectByIdMovies = async function (id) {
     }
 }
 
-const setInsertMovies = async function (filme) {
+const setInsertAudiovisualFormats = async function (formato_audioVisual) {
     try {
-        let sql = `insert into tbl_filme (
+        let sql = `insert into tbl_formato_audioVisual (
                     nome,
-                    sinopse,
-                    data_lancamento,
-                    duracao,
-                    orcamento,
-                    trailer,
-                    capa) 
-                    values ('${filme.nome}',
-                            '${filme.sinopse}',
-                            '${filme.data_lancamento}',
-                            '${filme.duracao}',
-                            '${filme.orcamento}',
-                            '${filme.trailer}',
-                            '${filme.capa}')`
+                    descricao) 
+                    values ('${formato_audioVisual.nome}',
+                            '${formato_audioVisual.descricao}')`
 
         let result = await prisma.$executeRawUnsafe(sql)
 
@@ -69,20 +59,13 @@ const setInsertMovies = async function (filme) {
     }
 }
 
-const setUpdateMovies = async function (filme) {
+const setUpdateAudiovisualFormats = async function (formato_audioVisual) {
     try {
-        let sql = `UPDATE tbl_filme set
-                    nome            = '${filme.nome}',
-                    sinopse         = '${filme.sinopse}',
-                    data_lancamento = '${filme.data_lancamento}',
-                    duracao         = '${filme.duracao}',
-                    orcamento       = '${filme.orcamento}',
-                    trailer         = '${filme.trailer}',
-                    capa            = '${filme.capa}'
+        let sql = `UPDATE tbl_formato_audioVisual set
+                    nome            = '${formato_audioVisual.nome}',
+                    descricao         = '${formato_audioVisual.descricao}'
                 WHERE 
-                    id = ${filme.id}`
-                    
-                    console.log(sql);
+                    id = ${formato_audioVisual.id}`
                     
         let result = await prisma.$executeRawUnsafe(sql)
 
@@ -95,9 +78,9 @@ const setUpdateMovies = async function (filme) {
     }
 }
 
-const setDeleteMovies = async function (id) {
+const setDeleteAudiovisualFormats = async function (id) {
     try {
-        let sql = `delete from tbl_filme where id=${id}`
+        let sql = `delete from tbl_formato_audioVisual where id=${id}`
         
         let result = await prisma.$queryRawUnsafe(sql)
 
@@ -113,7 +96,7 @@ const setDeleteMovies = async function (id) {
 
 const getSelectLastID = async function(){
     try {
-        let sql =`select id from tbl_filme order by id desc limit 1;`
+        let sql =`select id from tbl_formato_audioVisual order by id desc limit 1;`
 
          let result = await prisma.$queryRawUnsafe(sql)
 
@@ -128,10 +111,10 @@ const getSelectLastID = async function(){
 }
 
 module.exports = {
-    getSelectAllMovies,
-    getSelectByIdMovies,
-    setInsertMovies,
-    setUpdateMovies,
-    setDeleteMovies,
+    getSelectAllAudiovisualFormats,
+    getSelectByIdAudiovisualFormats,
+    setInsertAudiovisualFormats,
+    setUpdateAudiovisualFormats,
+    setDeleteAudiovisualFormats,
     getSelectLastID
 }

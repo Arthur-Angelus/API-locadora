@@ -5,21 +5,21 @@
  * versão: 1.0
  *****************************************************************/
 
-const generoDAO = require('../../model/DAO/genero.js')
+const formato_audioVisualDAO = require('../../model/DAO/formato_audioVisual.js')
 
 const DEFAULT_MESSAGES = require('./modulo/config_messages.js')
 
-const listarGeneros = async function () {
+const listarFormatos_audioVisuais = async function () {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        let resultGeneros = await generoDAO.getSelectAllGenres()
+        let resultFormatos_audioVisuais = await formato_audioVisualDAO.getSelectAllAudiovisualFormats()
 
-        if (resultGeneros) {
-            if (resultGeneros.length > 0) {
+        if (resultFormatos_audioVisuais) {
+            if (resultFormatos_audioVisuais.length > 0) {
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
-                MESSAGES.DEFAULT_HEADER.items.generos = resultGeneros
+                MESSAGES.DEFAULT_HEADER.items.Formatos_audioVisuais = resultFormatos_audioVisuais
 
                 return MESSAGES.DEFAULT_HEADER //200
             } else {
@@ -34,18 +34,18 @@ const listarGeneros = async function () {
     }
 }
 
-const buscarGeneroID = async function (id) {
+const buscarFormato_audioVisualID = async function (id) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
         if (!isNaN(id) && id != '' && id != null && id > 0) {
-            let resultGeneros = await generoDAO.getSelectByIdGenres(Number(id))
+            let resultFormatos_audioVisuais = await formato_audioVisualDAO.getSelectByIdAudiovisualFormats(Number(id))
 
-            if (resultGeneros) {
-                if (resultGeneros.length > 0) {
+            if (resultFormatos_audioVisuais) {
+                if (resultFormatos_audioVisuais.length > 0) {
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
-                    MESSAGES.DEFAULT_HEADER.items.genero = resultGeneros
+                    MESSAGES.DEFAULT_HEADER.items.Formato_audioVisual = resultFormatos_audioVisuais
 
                     return MESSAGES.DEFAULT_HEADER //200
                 } else {
@@ -65,25 +65,25 @@ const buscarGeneroID = async function (id) {
     }
 }
 
-const inserirGeneros = async function (genero, contentType) {
+const inserirFormatos_audioVisuais = async function (Formato_audioVisual, contentType) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-            let validar = await validarDadosGenero(genero)
+            let validar = await validarDadosFormato_audioVisual(Formato_audioVisual)
 
             if (!validar) {
-                let resultGeneros = await generoDAO.setInsertGenres(genero)
+                let resultFormatos_audioVisuais = await formato_audioVisualDAO.setInsertAudiovisualFormats(Formato_audioVisual)
 
-                if (resultGeneros) {
-                    let lastID = await generoDAO.getSelectLastID()
+                if (resultFormatos_audioVisuais) {
+                    let lastID = await formato_audioVisualDAO.getSelectLastID()
                     if (lastID) {
-                        genero.id = lastID
+                        Formato_audioVisual.id = lastID
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.items = genero
+                        MESSAGES.DEFAULT_HEADER.items = Formato_audioVisual
 
                         return MESSAGES.DEFAULT_HEADER //201
                     } else {
@@ -104,29 +104,29 @@ const inserirGeneros = async function (genero, contentType) {
     }
 }
 
-const atualizarGenero = async function (genero, id, contentType) {
+const atualizarFormato_audioVisual = async function (Formato_audioVisual, id, contentType) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-            let validar = await validarDadosGenero(genero)
+            let validar = await validarDadosFormato_audioVisual(Formato_audioVisual)
 
             if (!validar) {
 
-                let validarID = await buscarGeneroID(id)
+                let validarID = await buscarFormato_audioVisualID(id)
 
                 if (validarID.status_code == 200) {
 
-                    genero.id = Number(id)
+                    Formato_audioVisual.id = Number(id)
 
-                    let resultGeneros = await generoDAO.setUpdateGenres(genero)
+                    let resultFormatos_audioVisuais = await formato_audioVisualDAO.setUpdateAudiovisualFormats(Formato_audioVisual)
 
-                    if (resultGeneros) {
+                    if (resultFormatos_audioVisuais) {
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATED_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_UPDATED_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.items.genero = genero
+                        MESSAGES.DEFAULT_HEADER.items.Formato_audioVisual = Formato_audioVisual
 
                         return MESSAGES.DEFAULT_HEADER //200
                     } else {
@@ -146,25 +146,25 @@ const atualizarGenero = async function (genero, id, contentType) {
     }
 }
 
-const excluirGenero = async function (id) {
+const excluirFormato_audioVisual = async function (id) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
 
         if (!isNaN(id) && id != '' && id != null && id > 0) {
 
-            let validarID = await buscarGeneroID(id)
+            let validarID = await buscarFormato_audioVisualID(id)
 
             if (validarID.status_code == 200) {
 
-                let resultGeneros = await generoDAO.setDeleteGenres(Number(id))
+                let resultFormatos_audioVisuais = await formato_audioVisualDAO.setDeleteAudiovisualFormats(Number(id))
 
-                if (resultGeneros) {
+                if (resultFormatos_audioVisuais) {
 
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_DELETED_ITEM.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_DELETED_ITEM.status_code
                     MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_DELETED_ITEM.message
-                    MESSAGES.DEFAULT_HEADER.items.genero = resultGeneros
+                    MESSAGES.DEFAULT_HEADER.items.Formato_audioVisual = resultFormatos_audioVisuais
                     delete MESSAGES.DEFAULT_HEADER.items
                     return MESSAGES.DEFAULT_HEADER //200
 
@@ -184,14 +184,14 @@ const excluirGenero = async function (id) {
     }
 }
 
-const validarDadosGenero = async function (genero) {
+const validarDadosFormato_audioVisual = async function (Formato_audioVisual) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
-    if (genero.nome == '' || genero.nome == undefined || genero.nome == null || genero.nome.length > 100) {
+    if (Formato_audioVisual.nome == '' || Formato_audioVisual.nome == undefined || Formato_audioVisual.nome == null || Formato_audioVisual.nome.length > 100) {
         MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Nome incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    } else if (genero.descricao == undefined) {
+    } else if (Formato_audioVisual.descricao == undefined) {
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Descrição incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
@@ -201,9 +201,9 @@ const validarDadosGenero = async function (genero) {
 }
 
 module.exports = {
-    listarGeneros,
-    buscarGeneroID,
-    inserirGeneros,
-    atualizarGenero,
-    excluirGenero
+    listarFormatos_audioVisuais,
+    buscarFormato_audioVisualID,
+    inserirFormatos_audioVisuais,
+    atualizarFormato_audioVisual,
+    excluirFormato_audioVisual
 }

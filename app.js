@@ -96,6 +96,60 @@ app.delete('/v1/locadora/filme/:id', cors(), async function(request, response){
     response.json(filme)
 })
 
+//import da controller do genero
+const controllerGenero = require('./controller/filme/controller_genero.js')
+
+//endpoints para a rota de genero
+app.get('/v1/locadora/generos', cors(), async function (request, response) {
+    let genero = await controllerGenero.listarGeneros()
+
+    response.status(genero.status_code)
+    response.json(genero)
+})
+
+app.get('/v1/locadora/genero/:id', cors(), async function (request, response) {
+
+    let idGenero = request.params.id
+
+    let genero = await controllerGenero.buscarGeneroID(idGenero)
+
+    response.status(genero.status_code)
+    response.json(genero)
+})
+
+app.post('/v1/locadora/genero', cors(), bodyParserJSON, async function (request, response) {
+    let dadosBody = request.body
+
+    let contentType = request.headers['content-type']
+
+    let genero = await controllerGenero.inserirGeneros(dadosBody, contentType)
+
+    response.status(genero.status_code)
+    response.json(genero)
+})
+
+app.put('/v1/locadora/genero/:id', cors(), bodyParserJSON, async function(request, response){
+    let idGenero = request.params.id
+
+    let dadosBody = request.body
+
+    let contentType = request.headers['content-type']
+
+    let genero = await controllerGenero.atualizarGenero(dadosBody, idGenero, contentType)
+
+    response.status(genero.status_code)
+    response.json(genero)
+})
+
+app.delete('/v1/locadora/genero/:id', cors(), async function(request, response){
+    
+    let idGenero = request.params.id
+
+    let genero = await controllerGenero.excluirGenero(idGenero)
+    response.status(genero.status_code)
+    response.json(genero)
+})
+
 app.listen(PORT, function () {
     console.log('API aguardando requisições....')
 })

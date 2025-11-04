@@ -74,8 +74,6 @@ const setUpdateProfessionals = async function (profissional) {
                     genero              = '${profissional.genero}'
                 WHERE 
                     id = ${profissional.id}`
-
-                    console.log(sql)
                     
         let result = await prisma.$executeRawUnsafe(sql)
 

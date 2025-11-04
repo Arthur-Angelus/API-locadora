@@ -36,7 +36,7 @@ router.post('/v1/locadora/profissional', cors(), bodyParserJSON, async function 
 
     let contentType = request.headers['content-type']
 
-    let profissional = await controllerProfissional.inserirProfissionais(dadosBody, contentType)
+    let profissional = await controllerProfissional.inserirProfissional(dadosBody, contentType)
 
     response.status(profissional.status_code)
     response.json(profissional)

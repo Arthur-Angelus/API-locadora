@@ -187,6 +187,9 @@ const excluirProfissional = async function (id) {
 const validarDadosProfissional = async function (profissional) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
+    profissional.biografia = profissional.biografia.replace(/'/g, "");
+    profissional.biografia = profissional.biografia.replace(/"/g, "");
+
     if (profissional.nome == '' || profissional.nome == undefined || profissional.nome == null || profissional.nome.length > 100) {
         MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Nome incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS

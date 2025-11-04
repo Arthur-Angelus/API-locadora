@@ -32,6 +32,7 @@ const formato_audioVisialRoutes = require('./routes/routes_formato_audioVisual')
 const generoRoutes = require('./routes/routes_genero')
 const nacionalidadeRoutes = require('./routes/routes_nacionalidade')
 const paisRoutes = require('./routes/routes_pais')
+const profissionalRoutes = require('./routes/routes_profissional')
 
 app.use(cargoRoutes)
 app.use(filmeRoutes)
@@ -39,6 +40,7 @@ app.use(formato_audioVisialRoutes)
 app.use(generoRoutes)
 app.use(nacionalidadeRoutes)
 app.use(paisRoutes)
+app.use(profissionalRoutes)
 
 app.listen(PORT, function () {
     console.log('API aguardando requisições....')

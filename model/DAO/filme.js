@@ -1,5 +1,5 @@
 /********************************************************************
- * objetivo: aplicativo responsavel pelo crud de dados no mydql referente ao filme
+ * objetivo: aplicativo responsavel pelo crud de dados no mysql referente ao filme
  * data: 01/10/2025
  * autor: arthur
  * versão: 1.0

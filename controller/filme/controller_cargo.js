@@ -1,5 +1,5 @@
 /********************************************************************
- * objetivo: arquivo responsavel pela manipulação de dados entre o APP e o MODEL para o CRUD de generos
+ * objetivo: arquivo responsavel pela manipulação de dados entre o APP e o MODEL para o CRUD de cargos
  * data: 22/10/2025
  * autor: arthur
  * versão: 1.0

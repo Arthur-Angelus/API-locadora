@@ -1,5 +1,5 @@
 /********************************************************************
- * objetivo: aplicativo responsavel pelo crud de dados no mysql referente ao genero
+ * objetivo: aplicativo responsavel pelo crud de dados no mysql referente ao cargo
  * data: 22/10/2025
  * autor: arthur
  * versão: 1.0

@@ -8,9 +8,9 @@ const { PrismaClient } = require('../../generated/prisma')
 
 const prisma = new PrismaClient()
 
-const getSelectAllGenres = async function () {
+const getSelectAllNacionalitites = async function () {
     try {
-        let sql = `select * from tbl_genero order by id desc`
+        let sql = `select * from tbl_nacionalidade order by id desc`
 
         let result = await prisma.$queryRawUnsafe(sql)
 
@@ -24,9 +24,9 @@ const getSelectAllGenres = async function () {
     }
 }
 
-const getSelectByIdGenres = async function (id) {
+const getSelectByIdNacionalitites = async function (id) {
     try {
-        let sql = `select * from tbl_genero where id=${id}`
+        let sql = `select * from tbl_nacionalidade where id=${id}`
 
         let result = await prisma.$queryRawUnsafe(sql)
 
@@ -40,13 +40,11 @@ const getSelectByIdGenres = async function (id) {
     }
 }
 
-const setInsertGenres = async function (genero) {
+const setInsertNacionalitites = async function (nacionalidade) {
     try {
-        let sql = `insert into tbl_genero (
-                    nome,
-                    descricao) 
-                    values ('${genero.nome}',
-                            '${genero.descricao}')`
+        let sql = `insert into tbl_nacionalidade (
+                    nome) 
+                    values ('${nacionalidade.nome}')`
 
         let result = await prisma.$executeRawUnsafe(sql)
 
@@ -59,13 +57,12 @@ const setInsertGenres = async function (genero) {
     }
 }
 
-const setUpdateGenres = async function (genero) {
+const setUpdateNacionalitites = async function (nacionalidade) {
     try {
-        let sql = `UPDATE tbl_genero set
-                    nome            = '${genero.nome}',
-                    descricao         = '${genero.descricao}'
+        let sql = `UPDATE tbl_nacionalidade set
+                    nome            = '${nacionalidade.nome}'
                 WHERE 
-                    id = ${genero.id}`
+                    id = ${nacionalidade.id}`
                     
         let result = await prisma.$executeRawUnsafe(sql)
 
@@ -78,9 +75,9 @@ const setUpdateGenres = async function (genero) {
     }
 }
 
-const setDeleteGenres = async function (id) {
+const setDeleteNacionalitites = async function (id) {
     try {
-        let sql = `delete from tbl_genero where id=${id}`
+        let sql = `delete from tbl_nacionalidade where id=${id}`
         
         let result = await prisma.$queryRawUnsafe(sql)
 
@@ -96,7 +93,7 @@ const setDeleteGenres = async function (id) {
 
 const getSelectLastID = async function(){
     try {
-        let sql =`select id from tbl_genero order by id desc limit 1;`
+        let sql =`select id from tbl_nacionalidade order by id desc limit 1;`
 
          let result = await prisma.$queryRawUnsafe(sql)
 
@@ -111,10 +108,10 @@ const getSelectLastID = async function(){
 }
 
 module.exports = {
-    getSelectAllGenres,
-    getSelectByIdGenres,
-    setInsertGenres,
-    setUpdateGenres,
-    setDeleteGenres,
+    getSelectAllNacionalitites,
+    getSelectByIdNacionalitites,
+    setInsertNacionalitites,
+    setUpdateNacionalitites,
+    setDeleteNacionalitites,
     getSelectLastID
 }

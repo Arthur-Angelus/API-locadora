@@ -5,21 +5,21 @@
  * versão: 1.0
  *****************************************************************/
 
-const generoDAO = require('../../model/DAO/genero.js')
+const nacionalidadeDAO = require('../../model/DAO/nacionalidade.js')
 
 const DEFAULT_MESSAGES = require('./modulo/config_messages.js')
 
-const listarGeneros = async function () {
+const listarNacionalidades = async function () {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        let resultGeneros = await generoDAO.getSelectAllGenres()
+        let resultNacionalidades = await nacionalidadeDAO.getSelectAllNacionalitites()
 
-        if (resultGeneros) {
-            if (resultGeneros.length > 0) {
+        if (resultNacionalidades) {
+            if (resultNacionalidades.length > 0) {
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
-                MESSAGES.DEFAULT_HEADER.items.generos = resultGeneros
+                MESSAGES.DEFAULT_HEADER.items.nacionalidades = resultNacionalidades
 
                 return MESSAGES.DEFAULT_HEADER //200
             } else {
@@ -34,18 +34,18 @@ const listarGeneros = async function () {
     }
 }
 
-const buscarGeneroID = async function (id) {
+const buscarNacionalidadeID = async function (id) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
         if (!isNaN(id) && id != '' && id != null && id > 0) {
-            let resultGeneros = await generoDAO.getSelectByIdGenres(Number(id))
+            let resultNacionalidades = await nacionalidadeDAO.getSelectByIdNacionalitites(Number(id))
 
-            if (resultGeneros) {
-                if (resultGeneros.length > 0) {
+            if (resultNacionalidades) {
+                if (resultNacionalidades.length > 0) {
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
-                    MESSAGES.DEFAULT_HEADER.items.genero = resultGeneros
+                    MESSAGES.DEFAULT_HEADER.items.nacionalidade = resultNacionalidades
 
                     return MESSAGES.DEFAULT_HEADER //200
                 } else {
@@ -65,25 +65,25 @@ const buscarGeneroID = async function (id) {
     }
 }
 
-const inserirGeneros = async function (genero, contentType) {
+const inserirNacionalidades = async function (nacionalidade, contentType) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-            let validar = await validarDadosGenero(genero)
+            let validar = await validarDadosNacionalidade(nacionalidade)
 
             if (!validar) {
-                let resultGeneros = await generoDAO.setInsertGenres(genero)
+                let resultNacionalidades = await nacionalidadeDAO.setInsertNacionalitites(nacionalidade)
 
-                if (resultGeneros) {
-                    let lastID = await generoDAO.getSelectLastID()
+                if (resultNacionalidades) {
+                    let lastID = await nacionalidadeDAO.getSelectLastID()
                     if (lastID) {
-                        genero.id = lastID
+                        nacionalidade.id = lastID
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.items = genero
+                        MESSAGES.DEFAULT_HEADER.items = nacionalidade
 
                         return MESSAGES.DEFAULT_HEADER //201
                     } else {
@@ -104,29 +104,29 @@ const inserirGeneros = async function (genero, contentType) {
     }
 }
 
-const atualizarGenero = async function (genero, id, contentType) {
+const atualizarNacionalidade = async function (nacionalidade, id, contentType) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-            let validar = await validarDadosGenero(genero)
+            let validar = await validarDadosNacionalidade(nacionalidade)
 
             if (!validar) {
 
-                let validarID = await buscarGeneroID(id)
+                let validarID = await buscarNacionalidadeID(id)
 
                 if (validarID.status_code == 200) {
 
-                    genero.id = Number(id)
+                    nacionalidade.id = Number(id)
 
-                    let resultGeneros = await generoDAO.setUpdateGenres(genero)
+                    let resultNacionalidades = await nacionalidadeDAO.setUpdateNacionalitites(nacionalidade)
 
-                    if (resultGeneros) {
+                    if (resultNacionalidades) {
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATED_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_UPDATED_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.items.genero = genero
+                        MESSAGES.DEFAULT_HEADER.items.nacionalidade = nacionalidade
 
                         return MESSAGES.DEFAULT_HEADER //200
                     } else {
@@ -146,25 +146,25 @@ const atualizarGenero = async function (genero, id, contentType) {
     }
 }
 
-const excluirGenero = async function (id) {
+const excluirNacionalidade = async function (id) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
 
         if (!isNaN(id) && id != '' && id != null && id > 0) {
 
-            let validarID = await buscarGeneroID(id)
+            let validarID = await buscarNacionalidadeID(id)
 
             if (validarID.status_code == 200) {
 
-                let resultGeneros = await generoDAO.setDeleteGenres(Number(id))
+                let resultNacionalidades = await nacionalidadeDAO.setDeleteNacionalitites(Number(id))
 
-                if (resultGeneros) {
+                if (resultNacionalidades) {
 
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_DELETED_ITEM.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_DELETED_ITEM.status_code
                     MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_DELETED_ITEM.message
-                    MESSAGES.DEFAULT_HEADER.items.genero = resultGeneros
+                    MESSAGES.DEFAULT_HEADER.items.nacionalidade = resultNacionalidades
                     delete MESSAGES.DEFAULT_HEADER.items
                     return MESSAGES.DEFAULT_HEADER //200
 
@@ -184,15 +184,11 @@ const excluirGenero = async function (id) {
     }
 }
 
-const validarDadosGenero = async function (genero) {
+const validarDadosNacionalidade = async function (nacionalidade) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
-    if (genero.nome == '' || genero.nome == undefined || genero.nome == null || genero.nome.length > 100) {
+    if (nacionalidade.nome == '' || nacionalidade.nome == undefined || nacionalidade.nome == null || nacionalidade.nome.length > 100) {
         MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Nome incorreto]'
-        return MESSAGES.ERROR_REQUIRED_FIELDS
-
-    } else if (genero.descricao == undefined) {
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Descrição incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
     } else {
@@ -201,9 +197,9 @@ const validarDadosGenero = async function (genero) {
 }
 
 module.exports = {
-    listarGeneros,
-    buscarGeneroID,
-    inserirGeneros,
-    atualizarGenero,
-    excluirGenero
+    listarNacionalidades,
+    buscarNacionalidadeID,
+    inserirNacionalidades,
+    atualizarNacionalidade,
+    excluirNacionalidade
 }

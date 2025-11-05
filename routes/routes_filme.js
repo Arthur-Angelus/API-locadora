@@ -14,7 +14,7 @@ const router = express.Router()
 const bodyParserJSON = bodyParser.json()
 
 //import das controllers
-const controllerFilme = require('../controller/filme/controller_filme.js')
+const controllerFilme = require('../controller/filme/filme/controller_filme.js')
 
 //endpoints para a rota de filme
 router.get('/v1/locadora/filmes', cors(), async function (request, response) {

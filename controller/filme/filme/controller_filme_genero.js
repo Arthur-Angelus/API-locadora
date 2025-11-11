@@ -5,9 +5,9 @@
  * versão: 1.0
  *****************************************************************/
 
-const filmeGeneroDAO = require('../../model/DAO/filme_genero.js')
+const filmeGeneroDAO = require('../../../model/DAO/filme_genero.js')
 
-const DEFAULT_MESSAGES = require('./modulo/config_messages.js')
+const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
 const listarFilmesGeneros = async function () {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))

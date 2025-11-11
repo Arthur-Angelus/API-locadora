@@ -46,12 +46,13 @@ const getSelectGenresByidMovies = async function (filme_id) {
         let sql = `select tbl_genero.id, tbl_genero.nome 
                         from tbl_filme 
                                 inner join tbl_filme_genero
-                                    on tbl_filme.id = tbl_filme_genero.id_filme
+                                    on tbl_filme.id = tbl_filme_genero.filme_id
                                 inner join tbl_genero
-                                    on tbl_genero.id = tbl_filme.id_genero
+                                    on tbl_genero.id = tbl_filme_genero.genero_id
                         where tbl_filme.id = ${filme_id}`
 
         let result = await prisma.$queryRawUnsafe(sql)
+        
 
         if (Array.isArray(result))
             return result
@@ -69,9 +70,9 @@ const getSelectMoviesByidGenres = async function (genero_id) {
         let sql = `select tbl_filme.id, tbl_filme.nome 
                         from tbl_filme 
                                 inner join tbl_filme_genero
-                                    on tbl_filme.id = tbl_filme_genero.id_filme
+                                    on tbl_filme.id = tbl_filme_genero.filme_id
                                 inner join tbl_genero
-                                    on tbl_genero.id = tbl_filme.id_genero
+                                    on tbl_genero.id = tbl_filme_genero.genero_id
                         where tbl_genero.id = ${genero_id}`
 
         let result = await prisma.$queryRawUnsafe(sql)

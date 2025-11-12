@@ -33,6 +33,7 @@ const generoRoutes = require('./routes/routes_genero')
 const nacionalidadeRoutes = require('./routes/routes_nacionalidade')
 const paisRoutes = require('./routes/routes_pais')
 const profissionalRoutes = require('./routes/routes_profissional')
+const classificacaoRoutes = require('./routes/routes_classificacao')
 
 app.use(cargoRoutes)
 app.use(filmeRoutes)
@@ -41,6 +42,7 @@ app.use(generoRoutes)
 app.use(nacionalidadeRoutes)
 app.use(paisRoutes)
 app.use(profissionalRoutes)
+app.use(classificacaoRoutes)
 
 app.listen(PORT, function () {
     console.log('API aguardando requisições....')

@@ -85,14 +85,16 @@ const setInsertMovies = async function (filme) {
                     duracao,
                     orcamento,
                     trailer,
-                    capa) 
+                    capa,
+                    classificacao_id) 
                     values ('${filme.nome}',
                             '${filme.sinopse}',
                             '${filme.data_lancamento}',
                             '${filme.duracao}',
                             '${filme.orcamento}',
                             '${filme.trailer}',
-                            '${filme.capa}')`
+                            '${filme.capa}',
+                            '${filme.classificacao_id}')`
 
         //executeRawUnsafe() -> executa  o script sql que não tem retorno de valores
         let result = await prisma.$executeRawUnsafe(sql)
@@ -111,13 +113,14 @@ const setInsertMovies = async function (filme) {
 const setUpdateMovies = async function (filme) {
     try {
         let sql = `UPDATE tbl_filme set
-                    nome            = '${filme.nome}',
-                    sinopse         = '${filme.sinopse}',
-                    data_lancamento = '${filme.data_lancamento}',
-                    duracao         = '${filme.duracao}',
-                    orcamento       = '${filme.orcamento}',
-                    trailer         = '${filme.trailer}',
-                    capa            = '${filme.capa}'
+                    nome                = '${filme.nome}',
+                    sinopse             = '${filme.sinopse}',
+                    data_lancamento     = '${filme.data_lancamento}',
+                    duracao             = '${filme.duracao}',
+                    orcamento           = '${filme.orcamento}',
+                    trailer             = '${filme.trailer}',
+                    capa                = '${filme.capa}',
+                    classificacao_id    = '${filme.classificacao_id}'
                 WHERE 
                     id = ${filme.id}`
                     

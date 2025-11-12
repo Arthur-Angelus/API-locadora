@@ -25,6 +25,15 @@ const listarFilmes = async function () {
 
         if (resultFilmes) {
             if (resultFilmes.length > 0) {
+
+                //processamento para adicionar os generos aos filmes
+                    for(filme of resultFilmes){
+                        let resultGeneros = await controllerFilmeGenero.listarGenerosIdFilme(filme.id)
+
+                        if(resultGeneros.status_code == 200)
+                        filme.genero = resultGeneros.items.filme_genero
+                    }
+                //
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
                 MESSAGES.DEFAULT_HEADER.items.filmes = resultFilmes
@@ -54,6 +63,15 @@ const buscarFilmeID = async function (id) {
 
             if (resultFilme) {
                 if (resultFilme.length > 0) {
+
+                    //processamento para adicionar os generos aos filmes
+                    for(filme of resultFilmes){
+                        let resultGeneros = await controllerFilmeGenero.listarGenerosIdFilme(filme.id)
+
+                        if(resultGeneros.status_code == 200)
+                        filme.genero = resultGeneros.items.filme_genero
+                    }
+                //
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
                     MESSAGES.DEFAULT_HEADER.items.filme = resultFilme
@@ -273,6 +291,10 @@ const validarDadosFilme = async function (filme) {
 
     } else if (filme.capa == '' || filme.capa == undefined || filme.capa == null || filme.capa.length > 100) {
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Capa incorreto]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+
+    } else if (filme.classificacao_id == '' || filme.classificacao_id == undefined || filme.classificacao_id == null || filme.classificacao_id == 0) {
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Classificacao incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
     } else {
